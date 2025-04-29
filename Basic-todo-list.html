@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body> 
+  <input type="text" class="js-name">
+  <input type="date" class="js-date">
+  <button onclick="addTsk()">Add</button>
+  <div class="js-display"></div> 
+
+  
+  <script> 
+  let taskList = [];
+  function addTsk(){
+let inputName = document.querySelector('.js-name');
+let name = inputName.value; 
+let inputDate = document.querySelector('.js-date');
+let date = inputDate.value;
+taskList.push({
+  name:name,
+  date:date
+}) 
+renderUi()
+}
+  
+function renderUi(){
+  let html = ``;
+  taskList.forEach((todo,index)=>{
+    let name = todo.name;
+    let date = todo.date;
+    html += `<div>
+      <div>${name}</div>
+      <div>${date}</div>
+           </div>`
+  })
+  document.querySelector('.js-display').innerHTML = html;
+}
+  </script>
+</body>
+</html>
