@@ -73,7 +73,7 @@ function cancelEdit(){
 function searchItem(){
   taskList.forEach((todo,index)=>{
     let searchInput = document.querySelector(`.js-search`).value 
-    if (searchInput === todo.name){
+    if (todo.name.includes(searchInput)){
       let name = todo.name
       let date = todo.date 
       let html = `<div class="taskDiv-${index}">
