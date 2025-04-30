@@ -69,4 +69,22 @@ renderUi()
 function cancelEdit(){
   renderUi()
 }
+
+function searchItem(){
+  taskList.forEach((todo,index)=>{
+    let searchInput = document.querySelector(`.js-search`).value 
+    if (searchInput === todo.name){
+      let name = todo.name
+      let date = todo.date 
+      let html = `<div class="taskDiv-${index}">
+    <div class="name-${index}">${name}</div>
+    <div class="date-${index}">${date}</div>
+    <button onclick="edit(${index})">Edit</button> 
+    <button onclick="deleteTask(${index})">Delete</button>
+         </div>`
+         document.querySelector(`.js-display`).innerHTML = html
+    }
+   
+      })
+}
 renderUi()
