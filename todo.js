@@ -30,12 +30,43 @@ let html = ``;
 taskList.forEach((todo,index)=>{
   let name = todo.name;
   let date = todo.date;
-  html += `<div>
-    <div>${name}</div>
-    <div>${date}</div>
+  html += `<div class="taskDiv-${index}">
+    <div class="name-${index}">${name}</div>
+    <div class+"date-${index}">${date}</div>
+    <button onclick="edit(${index})">Edit</button> 
+    <button onclick="deleteTask(${index})">Delete</button>
          </div>`
 })
 document.querySelector('.js-display').innerHTML = html;
 localStrg()
 } 
+
+function deleteTask (index){
+  taskList.splice(index,1)
+  renderUi()
+  }
+
+function edit(index){
+let taskDiv = document.querySelector(`.taskDiv-${index}`) 
+let currentName = taskList[index].name
+let currentdate = taskList[index].date
+taskDiv.innerHTML = `<input class="editedName-${index}" value="${currentName}">
+                     <input type ="date" class="editedDate-${index}" value="${currentdate}">
+                      <button onclick="saveTask(${index})">save</button>
+                      <button onclick="cancelEdit()">cancel</button>`
+} 
+
+
+
+function saveTask(index){
+let editedName = document.querySelector(`.editedName-${index}`).value
+let editedDate = document.querySelector(`.editedDate-${index}`).value
+taskList[index].name = editedName;
+taskList[index].date = editedDate;
+renderUi()
+} 
+
+function cancelEdit(){
+  renderUi()
+}
 renderUi()
