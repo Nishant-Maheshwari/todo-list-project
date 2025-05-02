@@ -1,4 +1,5 @@
 let taskList = JSON.parse(localStorage.getItem("tskItems")) || [];
+let blockedWord = [];
 // data mamagement
 function addTsk(){
 let inputName = document.querySelector('.js-name');
@@ -13,6 +14,7 @@ inputName.value = ""
 inputDate.value = ""
 renderUi() 
 localStrg()
+tempNotify("js-blink",taskList.length - 1, "done")
 } 
 function localStrg(){
 localStorage.setItem('tskItems',JSON.stringify(taskList))
@@ -35,9 +37,11 @@ taskList.forEach((todo,index)=>{
     <div class+"date-${index}">${date}</div>
     <button onclick="edit(${index})">Edit</button> 
     <button onclick="deleteTask(${index})">Delete</button>
+    <div class="js-blink-${index}"></div>
          </div>`
 })
 document.querySelector('.js-display').innerHTML = html;
+
 localStrg()
 } 
 
@@ -53,7 +57,9 @@ let currentdate = taskList[index].date
 taskDiv.innerHTML = `<input class="editedName-${index}" value="${currentName}">
                      <input type ="date" class="editedDate-${index}" value="${currentdate}">
                       <button onclick="saveTask(${index})">save</button>
-                      <button onclick="cancelEdit()">cancel</button>`
+                      <button onclick="cancelEdit()">cancel</button>
+                      <div class="js-blink-${index}"></div>`
+                      
 } 
 
 
@@ -64,6 +70,8 @@ let editedDate = document.querySelector(`.editedDate-${index}`).value
 taskList[index].name = editedName;
 taskList[index].date = editedDate;
 renderUi()
+tempNotify("js-blink",index , "task edited")
+
 } 
 
 function cancelEdit(){
@@ -86,5 +94,14 @@ function searchItem(){
     }
    
       })
+} 
+//dynamic function --
+function tempNotify(className,index,textMsg){
+  let blink = document.querySelector(`.${className}-${index}`)
+  if (!blink){
+    return}else{
+  setTimeout(()=>{blink.innerHTML = textMsg},1000);
+  setTimeout(()=>{blink.innerHTML = ""},2000);}
+
 }
 renderUi()
