@@ -30,20 +30,25 @@ function clearTsk(){
 function renderUi(){
 let html = ``;
 taskList.forEach((todo,index)=>{
-  let name = todo.name;
-  let date = todo.date;
-  html += `<div class="taskDiv-${index}">
-    <div class="name-${index}">${name}</div>
-    <div class+"date-${index}">${date}</div>
-    <button onclick="edit(${index})">Edit</button> 
-    <button onclick="deleteTask(${index})">Delete</button>
-    <div class="js-blink-${index}"></div>
-         </div>`
+  
+  html += createHTML(todo,index)
 })
 document.querySelector('.js-display').innerHTML = html;
 
 localStrg()
 } 
+function createHTML(todo,index){
+let name = todo.name;
+let date = todo.date;
+ return `<div class="taskDiv-${index}">
+    <div class="name-${index}">${name}</div>
+    <div class+"date-${index}">${date}</div>
+    <button onclick="edit(${index})">Edit</button> 
+    <button onclick="deleteTask(${index})">Delete</button>
+    <button>Check</button>
+    <div class="js-blink-${index}"></div>
+         </div>`
+}
 
 function deleteTask (index){
   taskList.splice(index,1)
@@ -82,14 +87,9 @@ function searchItem(){
   taskList.forEach((todo,index)=>{
     let searchInput = document.querySelector(`.js-search`).value 
     if (todo.name.includes(searchInput)){
-      let name = todo.name
-      let date = todo.date 
-      let html = `<div class="taskDiv-${index}">
-    <div class="name-${index}">${name}</div>
-    <div class="date-${index}">${date}</div>
-    <button onclick="edit(${index})">Edit</button> 
-    <button onclick="deleteTask(${index})">Delete</button>
-         </div>`
+      // let name = todo.name
+      // let date = todo.date 
+      let html = createHTML(todo,index)
          document.querySelector(`.js-display`).innerHTML = html
     }
    
