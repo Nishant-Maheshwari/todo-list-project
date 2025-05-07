@@ -6,11 +6,14 @@
   let name = inputName.value; 
   let inputDate = document.querySelector('.js-date');
   let date = inputDate.value;
+  if(!name.trim()|| !date){
+    return
+  }else{
   taskList.push({
   name:name,
   date:date,
   completed:false
-  })  
+  })}  
   inputName.value = ""
   inputDate.value = ""
   renderUi() 
@@ -50,7 +53,7 @@
   }else
   return `<div class="taskDiv-${index}">
       <div class="name-${index}">${name}</div>
-      <div class="date-${index}">${date}</div>s
+      <div class="date-${index}">${date}</div>
       <button onclick="edit(${index})">Edit</button> 
       <button onclick="deleteTask(${index})">Delete</button>
       <button onclick="markedAsComplete(${index})">Check</button>
@@ -75,7 +78,7 @@
   taskDiv.innerHTML = `<input class="editedName-${index}" value="${currentName}">
                       <input type ="date" class="editedDate-${index}" value="${currentdate}">
                         <button onclick="saveTask(${index})">save</button>
-                        <button onclick="cancelEdit()">cancel</button>
+                        <button onclick="cancelEdit(${index})">cancel</button>
                         <div class="js-blink-${index}"></div>`
                         
   } 
@@ -91,10 +94,20 @@
   tempNotify("js-blink",index , "task edited")
 
   } 
+// Ive study this properly
+  // function cancelEdit(index) {
+  //   const taskDiv = document.querySelector(`.taskDiv-${index}`);
+  //   taskDiv.innerHTML = createHTML(taskList[index], index); // Only re-renders that task
+  // } 
+  function cancelEdit(index){
+    const taskDiv = document.querySelector(`.taskDiv-${index}`)
+    taskDiv.innerHTML = createHTML(taskList[index],index)
+   }
+  
 
-  function cancelEdit(){
-    renderUi()
-  }
+  // function cancelEdit(){
+  //   renderUi()
+  // }
 
   function searchItem(){
     taskList.forEach((todo,index)=>{
