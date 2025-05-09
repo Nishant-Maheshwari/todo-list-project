@@ -88,10 +88,31 @@
   function saveTask(index){
   let editedName = document.querySelector(`.editedName-${index}`).value
   let editedDate = document.querySelector(`.editedDate-${index}`).value
-  taskList[index].name = editedName;
-  taskList[index].date = editedDate;
-  renderUi()
-  tempNotify("js-blink",index , "task edited")
+  let originalName = taskList[index].name;
+  let originalDate = taskList[index].date;
+  let changedName = editedName !== originalName;
+  let changedDate = editedDate !== originalDate;
+  if(changedName){
+    taskList[index].name = editedName;
+  }
+  if(changedDate){
+    taskList[index].date = editedDate;
+  } 
+renderUi()
+  if(changedName && changedDate){
+    tempNotify("js-blink",index , "task Name and Date edited")
+  }else if(
+    changedName
+  ){
+    tempNotify("js-blink",index , "task Name edited")
+  }else if(
+    changedDate
+  ){
+    tempNotify("js-blink",index , "task Date edited")
+  }
+  
+ 
+  
 
   } 
 // Ive study this properly
