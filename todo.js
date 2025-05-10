@@ -49,6 +49,7 @@
       <div class="name-${index}">${name}</div>
       <div class="date-${index}">${date}</div>
       <div>Task Completed</div>
+      <div class="js-blink-${index}"></div>
           </div>`
   }else
   return `<div class="taskDiv-${index}">
@@ -63,12 +64,16 @@
 
   function markedAsComplete(index){
     taskList[index].completed = true 
-    renderUi()
+    localStrg()
+    let taskDiv = document.querySelector(`.taskDiv-${index}`)
+    taskDiv.innerHTML = createHTML(taskList[index],index)
+    tempNotify("js-blink",index , "Task checked")
   }
 
   function deleteTask (index){
     taskList.splice(index,1)
-    renderUi()
+    localStrg();
+
     }
 
   function edit(index){
@@ -98,7 +103,9 @@
   if(changedDate){
     taskList[index].date = editedDate;
   } 
-renderUi()
+localStrg()
+let taskDiv = document.querySelector(`.taskDiv-${index}`);
+taskDiv.innerHTML = createHTML(taskList[index],index)
   if(changedName && changedDate){
     tempNotify("js-blink",index , "task Name and Date edited")
   }else if(
