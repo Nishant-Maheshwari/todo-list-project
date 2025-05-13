@@ -133,22 +133,37 @@ taskDiv.innerHTML = createHTML(taskList[index],index)
    }
   
 
-  // function cancelEdit(){
-  //   renderUi()
-  // }
-
-  function searchItem(){
-    taskList.forEach((todo,index)=>{
-      let searchInput = document.querySelector(`.js-search`).value 
-      if (todo.name.includes(searchInput)){
-        // let name = todo.name
-        // let date = todo.date 
-        let html = createHTML(todo,index)
-          document.querySelector(`.js-display`).innerHTML = html
-      }
-    
-        })
+  function cancelEdit(){
+    renderUi()
   } 
+  function searchItem(){
+    let searchInput = document.querySelector(`.js-search`).value
+    let filter = taskList.filter((todo)=>{ 
+      return todo.name.includes(searchInput)
+}
+    )
+    let html = ``;
+    filter.forEach((todo,index)=>{
+    html += createHTML(todo,index)
+    })
+    document.querySelector(`.js-display`).innerHTML = html
+  }
+
+  // function searchItem(){
+  //   taskList.forEach((todo,index)=>{
+  //     let searchInput = document.querySelector(`.js-search`).value 
+  //     if (todo.name.includes(searchInput)){
+  //       // let name = todo.name
+  //       // let date = todo.date 
+  //       let html = createHTML(todo,index)
+  //         document.querySelector(`.js-display`).innerHTML = html
+  //     } 
+  //     if(todo.name !== searchInput){
+  //       alert('No match')
+  //     }
+    
+  //       })
+  // } 
   //dynamic function --
   function tempNotify(className,index,textMsg){
     let blink = document.querySelector(`.${className}-${index}`)
