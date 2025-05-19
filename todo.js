@@ -1,6 +1,9 @@
+  // =================== Model ===================
+  
+  
   let taskList = JSON.parse(localStorage.getItem("tskItems")) || [];
   let blockedWord = [];
-  // data mamagement
+
   function addTsk(){
   let inputName = document.querySelector('.js-name');
   let name = inputName.value; 
@@ -20,17 +23,61 @@
   localStrg()
   tempNotify("js-blink",taskList.length - 1, "done")
   } 
-  function localStrg(){
-  localStorage.setItem('tskItems',JSON.stringify(taskList))
-  } 
+
+  function deleteTask (index){
+    taskList.splice(index,1)
+    localStrg();
+    renderUi()
+    }
+
   function clearTsk(){
     localStorage.clear() 
     taskList = [];
-    renderUi()
-
-    
+   renderUi()
   }
-  // Dom
+
+
+  function localStrg(){
+  localStorage.setItem('tskItems',JSON.stringify(taskList))
+  } 
+
+  function saveTask(index){
+  let editedName = document.querySelector(`.editedName-${index}`).value
+  let editedDate = document.querySelector(`.editedDate-${index}`).value
+  let originalName = taskList[index].name;
+  let originalDate = taskList[index].date;
+  let changedName = editedName !== originalName;
+  let changedDate = editedDate !== originalDate;
+  if(changedName){
+    taskList[index].name = editedName;
+  }
+  if(changedDate){
+    taskList[index].date = editedDate;
+  } 
+localStrg()
+let taskDiv = document.querySelector(`.taskDiv-${index}`);
+taskDiv.innerHTML = createHTML(taskList[index],index)
+
+updateSingleTaskUI(index)
+notifyChanges(index , changedDate ,changedName)
+
+  
+} 
+
+
+  function clearTsk(){
+    localStorage.clear() 
+    taskList = [];
+   renderUi()
+  } 
+
+    function markedAsComplete(index){
+    taskList[index].completed = true 
+    localStrg()
+    updateSingleTaskUI(index)
+  }
+
+  // =================== View ===================
   function renderUi(){
   let html = ``;
   taskList.forEach((todo,index)=>{
@@ -39,7 +86,6 @@
   })
   document.querySelector('.js-display').innerHTML = html;
 
-  localStrg()
   } 
   function createHTML(todo,index){
   let name = todo.name;
@@ -62,19 +108,8 @@
           </div>`
   }
 
-  function markedAsComplete(index){
-    taskList[index].completed = true 
-    localStrg()
-    let taskDiv = document.querySelector(`.taskDiv-${index}`)
-    taskDiv.innerHTML = createHTML(taskList[index],index)
-    tempNotify("js-blink",index , "Task checked")
-  }
 
-  function deleteTask (index){
-    taskList.splice(index,1)
-    localStrg();
-
-    }
+  
 
   function edit(index){
   let taskDiv = document.querySelector(`.taskDiv-${index}`) 
@@ -90,23 +125,11 @@
 
 
 
-  function saveTask(index){
-  let editedName = document.querySelector(`.editedName-${index}`).value
-  let editedDate = document.querySelector(`.editedDate-${index}`).value
-  let originalName = taskList[index].name;
-  let originalDate = taskList[index].date;
-  let changedName = editedName !== originalName;
-  let changedDate = editedDate !== originalDate;
-  if(changedName){
-    taskList[index].name = editedName;
-  }
-  if(changedDate){
-    taskList[index].date = editedDate;
-  } 
-localStrg()
-let taskDiv = document.querySelector(`.taskDiv-${index}`);
-taskDiv.innerHTML = createHTML(taskList[index],index)
-  if(changedName && changedDate){
+  
+
+
+function notifyChanges(index , changedDate , changedName){
+   if(changedName && changedDate){
     tempNotify("js-blink",index , "task Name and Date edited")
   }else if(
     changedName
@@ -117,25 +140,32 @@ taskDiv.innerHTML = createHTML(taskList[index],index)
   ){
     tempNotify("js-blink",index , "task Date edited")
   }
-  
- 
-  
+} 
 
-  } 
-// Ive study this properly
-  // function cancelEdit(index) {
-  //   const taskDiv = document.querySelector(`.taskDiv-${index}`);
-  //   taskDiv.innerHTML = createHTML(taskList[index], index); // Only re-renders that task
-  // } 
-  function cancelEdit(index){
-    const taskDiv = document.querySelector(`.taskDiv-${index}`)
-    taskDiv.innerHTML = createHTML(taskList[index],index)
+ function cancelEdit(index){
+    updateSingleTaskUI(index)
    }
+
+function updateSingleTaskUI(index){
+  let taskDiv = document.querySelector(`.taskDiv-${index}`);
+  if(taskDiv){
+taskDiv.innerHTML = createHTML(taskList[index],index)}
+} 
+
+ function tempNotify(className,index,textMsg){
+    let blink = document.querySelector(`.${className}-${index}`)
+    if (!blink){
+      return}else{
+    setTimeout(()=>{blink.innerHTML = textMsg},1000);
+    setTimeout(()=>{blink.innerHTML = ""},2000);}
+
+  }
+
+
+ // ============ Controller ============
   
 
-  function cancelEdit(){
-    renderUi()
-  } 
+ 
   function searchItem(){
     let searchInput = document.querySelector(`.js-search`).value
     let filter = taskList.filter((todo)=>{ 
@@ -164,13 +194,6 @@ taskDiv.innerHTML = createHTML(taskList[index],index)
     
   //       })
   // } 
-  //dynamic function --
-  function tempNotify(className,index,textMsg){
-    let blink = document.querySelector(`.${className}-${index}`)
-    if (!blink){
-      return}else{
-    setTimeout(()=>{blink.innerHTML = textMsg},1000);
-    setTimeout(()=>{blink.innerHTML = ""},2000);}
-
-  }
+ 
+ 
   renderUi()
