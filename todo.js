@@ -168,13 +168,14 @@ taskDiv.innerHTML = createHTML(taskList[index],index)}
  
   function searchItem(){
     let searchInput = document.querySelector(`.js-search`).value
-    let filter = taskList.filter((todo)=>{ 
+    let filter = taskList.map((todo,index)=>({...todo,originalIndex : index}))
+    .filter((todo)=>{ 
       return todo.name.includes(searchInput)
 }
     )
     let html = ``;
-    filter.forEach((todo,index)=>{
-    html += createHTML(todo,index)
+    filter.forEach((todo)=>{
+    html += createHTML(todo,todo.originalIndex)
     })
     document.querySelector(`.js-display`).innerHTML = html
   }
