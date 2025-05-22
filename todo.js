@@ -72,7 +72,7 @@ notifyChanges(index , changedDate ,changedName)
   } 
 
     function markedAsComplete(index){
-    taskList[index].completed = true 
+    taskList[index].completed = !taskList[index].completed 
     localStrg()
     updateSingleTaskUI(index)
   }
@@ -94,6 +94,7 @@ notifyChanges(index , changedDate ,changedName)
     return `<div class="taskDiv-${index}">
       <div class="name-${index}">${name}</div>
       <div class="date-${index}">${date}</div>
+      <button onclick="markedAsComplete(${index})">Uncheck</button>
       <div>Task Completed</div>
       <div class="js-blink-${index}"></div>
           </div>`
