@@ -90,21 +90,31 @@ notifyChanges(index , changedDate ,changedName)
   function createHTML(todo,index){
   let name = todo.name;
   let date = todo.date;
-  if(todo.completed){
-    return `<div class="taskDiv-${index}">
-      <div class="name-${index}">${name}</div>
-      <div class="date-${index}">${date}</div>
-      <button onclick="markedAsComplete(${index})">Uncheck</button>
-      <div>Task Completed</div>
-      <div class="js-blink-${index}"></div>
-          </div>`
-  }else
+  let isDone = todo.completed; 
+
+
+  let taskStatusHtml = '';
+  if(isDone){
+    taskStatusHtml = `task completed`
+  } 
+
+  let buttonElement = `check`
+  if(isDone){
+    buttonElement = `undo`
+  }
+  let editVisual = ``;
+if(!isDone){
+  editVisual = `
+  <button onclick="edit(${index})">Edit</button> 
+      <button onclick="deleteTask(${index})">Delete</button>`
+}
+
   return `<div class="taskDiv-${index}">
       <div class="name-${index}">${name}</div>
       <div class="date-${index}">${date}</div>
-      <button onclick="edit(${index})">Edit</button> 
-      <button onclick="deleteTask(${index})">Delete</button>
-      <button onclick="markedAsComplete(${index})">Check</button>
+      ${taskStatusHtml}
+      ${editVisual}
+      <button onclick="markedAsComplete(${index})">${buttonElement}</button>
       <div class="js-blink-${index}"></div>
           </div>`
   }
